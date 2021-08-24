@@ -20,3 +20,5 @@ Route::get('hello', function () {
 });
 
 Route::get('/user', 'UsersController@index');
+Route::get('/install', 'UsersController@install');
+Route::get('/install2', 'UsersController@install2');
