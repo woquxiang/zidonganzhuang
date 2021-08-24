@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DivineOmega\SSHConnection\SSHConnection;
+use phpseclib\Net\SSH2;
 use Spatie\Ssh\Ssh;
 
 
@@ -14,25 +15,29 @@ class UsersController extends Controller
 
     public function install2(){
 
+        $connection = new SSH2("8.210.238.151");
 
-        $connection = ssh2_connect( '108.160.140.76' , 22 );
-        ssh2_auth_password( $connection , 'root' , ',Y7c9j1ren3J]h5t' );
-        echo ssh2_scp_send($connection, '/local/filename', '/remote/filename', 0644);
-        die();
-
-
+        if (!$connection->login('root', 'qian3940.')) {
+            exit('Login Failed');
+        }
 
 
-        $connection = Ssh::create('root', '107.191.52.67','22')
-            // ->disablePasswordAuthentication()
-            ->disablePasswordAuthentication()
-            ->disableStrictHostKeyChecking()
-            ->usePrivateKey('C:/Users/Administrator/Documents/zidonganzhuang/public/id_rsa')
-            ->execute('pwd')
-        ;
+       // $shell = 'yum -y update && yum -y groupinstall "Development Tools" && yum -y install wget && wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.16.tar.gz && tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16  &&  ./configure && make -j2 && make install  &&  echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf  &&  ldconfig && cd ~  && git clone https://github.com/miseryCN/shadowsocksr.git && cd shadowsocksr && ./initcfg.sh  && cd /root/shadowsocksr  &&  rm -rf user-config.json  && rm -rf usermysql.json  &&  wget http://jusuqiu3.com/shell/88/user-config.json  &&  wget http://jusuqiu3.com/shell/haitunpluscom/usermysql.json'
 
-        var_dump($connection);
+//        $connection->exec(
+//            "set -e" . PHP_EOL
+////             "yum -y update" . PHP_EOL
+////            . 'yum -y groupinstall "Development Tools"' . PHP_EOL
+////            . "yum -y install wget" . PHP_EOL
+//            . "wget https://downloadfileoss.oss-cn-beijing.aliyuncs.com/libsodium-1.0.16.tar.gz"
+//            . "  tar xf /root/libsodium-1.0.16.tar.gz"
+//            , function ($str) {
+//            echo $str;
+//                 flush();
+//                 ob_flush();
+//        });
 
+        $connection->exec("tar xf /root/libsodium-1.0.16.tar.gz");
 
 
     }
